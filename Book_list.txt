@@ -1,0 +1,1 @@
+ID: A01  Title: Dragon Ball  Author: Toriyama  Genre: comic  Number of copy: 50ID: A02  Title: Doraemon  Author: fujiko  Genre: comic  Number of copy: 99ID: A03  Title: Conan  Author: Aoyama  Genre: comic  Number of copy: 100ID: A01  Title: Dragon Ball  Author: Toriyama  Genre: comic  Number of copy: 50ID: A03  Title: Conan  Author: Aoyama  Genre: comic  Number of copy: 100
