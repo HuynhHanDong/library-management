@@ -4,17 +4,17 @@ def main():
     manager = BooksManager()
 
     while True:
-        print("\n---------- Student Management System ----------")
-        print("1. Add Book")
-        print("2. Change Book Info")
-        print("3. Remove Book")
-        print("4. Find Book")
-        print("5. Display All Books")
-        print("6. Print Book list By Alphabetical Title")
-        print("7. Display Book List With filter")
-        print("8. Save Data To File")
-        print("9. Exit")
-        print("-" * 50)
+        print("\n+------------ Student Management System ------------+")
+        print("|  1. Add Book                                      |")
+        print("|  2. Change Book Info                              |")
+        print("|  3. Remove Book                                   |")
+        print("|  4. Find Book                                     |")
+        print("|  5. Display All Books                             |")
+        print("|  6. Print Book list By Alphabetical Title         |")
+        print("|  7. Display Book List With filter                 |")
+        print("|  8. Save Data To File                             |")
+        print("|  9. Exit                                          |")
+        print("+---------------------------------------------------+")
 
         try:
             choice = int(input("Enter your choice: "))
@@ -62,7 +62,8 @@ def main():
                 print("Invalid choice. Please try again.")
         except:
             print("Invalid input. Try again.")
-
+        print()
+        print("~" * 120)
 
 if __name__ == "__main__":
     main()

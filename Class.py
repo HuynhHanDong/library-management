@@ -42,42 +42,58 @@ class BooksManager:
             self.book_list.pop(remove)
             print("Book removed!")
         except KeyError:
-            print("Book not found!")
+            print("This book does not exist!")
 
-    def find_book(self):  # find book by category
+    def find_book(self):
         book = input("Enter book's id to find: ")
-        try:
-            print(f"ID: {book}  Title: {self.book_list[book][0]}  Author: {self.book_list[book][1]}  Genre: {self.book_list[book][2]}  Number of copy: {self.book_list[book][3]}  Borrowed: {self.book_list[book][4]}")
-        except KeyError:
+        if book in self.book_list:
+            print_table()
+            print(f"|{book.center(8)}|{self.book_list[book][0].center(21)}|{self.book_list[book][1].center(20)}|{self.book_list[book][2].center(15)}|"
+                  f"{str(self.book_list[book][3]).center(15)}|{str(self.book_list[book][4]).center(15)}|{self.book_list[book][5].center(15)}|")
+            print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
+        else:
             print("Book not found")
 
     def display_book_list(self):
+        print_table()
         for book in sorted(self.book_list):
-            print(f"ID: {book}  Title: {self.book_list[book][0]}  Author: {self.book_list[book][1]}  Genre: {self.book_list[book][2]}  Number of copy: {self.book_list[book][3]}  Borrowed: {self.book_list[book][4]}")
+            print(f"|{book.center(8)}|{self.book_list[book][0].center(21)}|{self.book_list[book][1].center(20)}|{self.book_list[book][2].center(15)}|"
+                  f"{str(self.book_list[book][3]).center(15)}|{str(self.book_list[book][4]).center(15)}|{self.book_list[book][5].center(15)}|")
+            print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
 
-    def sort_book_list(self):
+    def sort_book_list(self):  # Sort book title
+        print_table()
         for book, value in sorted(self.book_list.items(), key=lambda info: info[1][0]):
-            print(f"ID: {book}  Title: {self.book_list[book][0]}  Author: {self.book_list[book][1]}  Genre: {self.book_list[book][2]}  Number of copy: {self.book_list[book][3]}  Borrowed: {self.book_list[book][4]}")
+            print(f"|{book.center(8)}|{self.book_list[book][0].center(21)}|{self.book_list[book][1].center(20)}|{self.book_list[book][2].center(15)}|"
+                  f"{str(self.book_list[book][3]).center(15)}|{str(self.book_list[book][4]).center(15)}|{self.book_list[book][5].center(15)}|")
+            print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
 
     def filter(self):
         category = int(input("Choose a number of category to filter: 1.title  |  2.author  |  3.genre  |  4.status \n"))
-        if 0 < category < 4:
-            value = input("Enter the value to filter out: ")
+        if 0 < category < 5:
+            if category == 4:
+                category += 2  # change index to Status
+                value = input("Enter a value to filter out:  Available  |  Not Available \n")
+            else:
+                value = input("Enter the value to filter out: ")
+            print_table()
             for book in self.book_list:
                 if self.book_list[book][category - 1] == value.title():
-                    print(f"ID: {book}  Title: {self.book_list[book][0]}  Author: {self.book_list[book][1]}  Genre: {self.book_list[book][2]}  Number of copy: {self.book_list[book][3]}  Borrowed: {self.book_list[book][4]}")
-        elif category == 4:
-            status = input("Choose the status to filter out:  Available  |  Not Available \n")
-            for book, value in self.book_list.items():
-                if value[5] == status.title():
-                    print(f"{value[5]}  ID: {book}  Title: {self.book_list[book][0]}  Author: {self.book_list[book][1]}  Genre: {self.book_list[book][2]}  Number of copy: {self.book_list[book][3]}  Borrowed: {self.book_list[book][4]}")
+                    print(f"|{book.center(8)}|{self.book_list[book][0].center(21)}|{self.book_list[book][1].center(20)}|{self.book_list[book][2].center(15)}|"
+                          f"{str(self.book_list[book][3]).center(15)}|{str(self.book_list[book][4]).center(15)}|{self.book_list[book][5].center(15)}|")
+                    print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
         else:
-            print("Please choose a number between 1 and 4. Try again!")
+            print("Please choose a number between 1 and 5. Try again!")
 
     def save_file(self):
         data = open("Book_list.txt", "w")
+        data.write("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+\n")
+        data.write("|  ID    |        Title        |       Author       |     Genre     |   Quantity    |   Borrowed    |    Status     |\n")
+        data.write("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+\n")
         for book in sorted(self.book_list):
-            data.write(f"ID: {book}  Title: {self.book_list[book][0]}  Author: {self.book_list[book][1]}  Genre: {self.book_list[book][2]}  Number of copy: {self.book_list[book][3]}  Borrowed: {self.book_list[book][4]}  Status: {self.book_list[book][5]}\n")
+            data.write(f"|{book.center(8)}|{self.book_list[book][0].center(21)}|{self.book_list[book][1].center(20)}|{self.book_list[book][2].center(15)}|"
+                       f"{str(self.book_list[book][3]).center(15)}|{str(self.book_list[book][4]).center(15)}|{self.book_list[book][5].center(15)}|\n")
+            data.write("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+\n")
         print("Saved to file!")
         data.close()
 
@@ -86,3 +102,8 @@ class BooksManager:
             return 1
         else:
             return 0
+
+def print_table():
+    print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
+    print("|  ID    |        Title        |       Author       |     Genre     |   Quantity    |   Borrowed    |    Status     |")
+    print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
