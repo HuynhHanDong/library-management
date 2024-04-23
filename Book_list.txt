@@ -1,1 +1,7 @@
-ID: A01  Title: Dragon Ball  Author: Toriyama  Genre: comic  Number of copy: 50ID: A02  Title: Doraemon  Author: fujiko  Genre: comic  Number of copy: 99ID: A03  Title: Conan  Author: Aoyama  Genre: comic  Number of copy: 100ID: A01  Title: Dragon Ball  Author: Toriyama  Genre: comic  Number of copy: 50ID: A03  Title: Conan  Author: Aoyama  Genre: comic  Number of copy: 100
+ID: A01  Title: Dragon Ball  Author: Toriyama  Genre: Comic  Number of copy: 100  Borrowed: 0  Status: Available
+ID: A02  Title: Conan  Author: Aoyama  Genre: Comic  Number of copy: 500  Borrowed: 0  Status: Available
+ID: A03  Title: Doraemon  Author: Fujiko  Genre: Comic  Number of copy: 99  Borrowed: 0  Status: Available
+ID: B01  Title: The Little Prince  Author: Antoine De Saint-Exupéry  Genre: Children Book  Number of copy: 50  Borrowed: 0  Status: Available
+ID: D01  Title: Math  Author: Ministry Of Education  Genre: Textbook  Number of copy: 10  Borrowed: 0  Status: Available
+ID: D02  Title: Physic  Author: Ministry Of Education  Genre: Textbook  Number of copy: 15  Borrowed: 0  Status: Available
+ID: D03  Title: English  Author: Ministry Of Education  Genre: Textbook  Number of copy: 20  Borrowed: 0  Status: Available
