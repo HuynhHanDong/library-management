@@ -1,4 +1,4 @@
-from Class import*
+from BookManagement import*
 
 def main():
     manager = BooksManager()
@@ -30,6 +30,9 @@ def main():
                 genre = input("Enter book's genre: ")
                 genre = genre.title()
                 quantity = int(input("Enter number of copies: "))
+                if quantity <= 0:
+                    print("Number of copies must be larger than 0. ")
+                    continue
                 book = Book(id, title, author, genre, quantity)
                 manager.add_book(book)
 

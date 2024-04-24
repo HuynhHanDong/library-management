@@ -8,11 +8,16 @@ class Book:
         self.borrowed = 0
         self.status = "Available"
 
-    def borrowed_book(self):
+    def borrow_book(self):
         if self.borrowed != self.quantity:
             self.borrowed += 1
         if self.borrowed == self.quantity:
             self.status = "Not Available"
+
+    def return_book(self):
+        self.borrowed -= 1
+        if self.borrowed < self.quantity:
+            self.status = "Available"
 
 class BooksManager:
     def __init__(self):
@@ -34,7 +39,7 @@ class BooksManager:
             else:
                 print("Please choose a number between 1 and 4. Try again!")
         else:
-            print("Book no found")
+            print("Book no found.")
 
     def remove_book(self):
         remove = input("Enter book's id to remove: ")
@@ -52,7 +57,7 @@ class BooksManager:
                   f"{str(self.book_list[book][3]).center(15)}|{str(self.book_list[book][4]).center(15)}|{self.book_list[book][5].center(15)}|")
             print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
         else:
-            print("Book not found")
+            print("Book not found.")
 
     def display_book_list(self):
         print_table()
