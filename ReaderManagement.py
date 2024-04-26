@@ -1,20 +1,19 @@
 from datetime import datetime, timedelta
-import copy
 
 class Reader:
-    def __init__(self, name, email, phone_number, title_of_book, borrow_date):
+    def __init__(self, name, email, phone_number, book_title, borrow_date, status='False', fine=0):
         self.name = name
         self.email = email
         self.phone_number = phone_number
-        self.title_of_book = title_of_book
+        self.book_title = book_title
         self.borrow_date = datetime.strptime(borrow_date, '%Y-%m-%d')
-        self.return_date = self.borrow_date + timedelta(days=30)
-        self.status = False
-        self.fine = 0
+        self.expired_date = self.borrow_date + timedelta(days=30)
+        self.status = status
+        self.fine = fine
 
     def display_info(self):
-        print(f"| {self.name} | {self.email} | {self.phone_number} | {self.title_of_book} | {self.borrow_date} | "
-              f"{self.return_date} | {self.status} | {self.fine} |")
+        print(f"| {self.name} | {self.email} | {self.phone_number} | {self.book_title} | {self.borrow_date.strftime('%Y-%m-%d')} | "
+              f"{self.expired_date.strftime('%Y-%m-%d')} | {self.status} | {self.fine} |")
 
 class ReaderManagement:
     def __init__(self):
@@ -48,7 +47,7 @@ class ReaderManagement:
         if self.check_reader(name.title()):
             book = input(f"Enter title of book {name.title()} borrowed: ")
             for i, reader in enumerate(self.readers):
-                if reader.name == name.title() and reader.title_of_book == book.title():
+                if reader.name == name.title() and reader.book_title == book.title():
                     del self.readers[i]
                     print("Reader removed successfully.")
         else: 
@@ -75,12 +74,17 @@ class ReaderManagement:
         else: 
             print('Sort key must be "borrow_date" or "fine".')
 
-    def show_list_of_readers_with_filter(self, **filters):  # Cần cải thiện UX, filter name/ book tittle/ status
-        filtered_readers = copy.deepcopy(self.readers)
-        for key, value in filters.items():
-            filtered_readers = [reader for reader in filtered_readers if getattr(reader, key) == value]
-        for reader in filtered_readers:
-            reader.display_info()
+    def show_list_of_readers_with_filter(self):
+        category = input("Enter category you want to filter: name | book_title | status | fine \n")
+        value = input("Enter value want to filter out: ")
+        if category.lower() in ['name', 'book_title', 'status', 'fine']:
+            for reader in self.readers:
+                if getattr(reader, category.lower()) == value.title():
+                    reader.display_info()
+                elif getattr(reader, category.lower()) == int(value):
+                    reader.display_info()
+        else:
+            print("Invalid category. Please try again!")
 
     def add_returned_book(self):
         returned = False
@@ -88,24 +92,23 @@ class ReaderManagement:
         if self.check_reader(name):
             book = input("Enter name of the book: ")
             for reader in self.readers:
-                if reader.name == name.title() and reader.title_of_book == book.title():
-                    reader.status = True
+                if reader.name == name.title() and reader.book_title == book.title():
+                    reader.status = 'True'
                     returned = True
                     print("Book return status updated successfully.")
             return returned
         else:
             print("Reader not found.")
 
-    def add_fine_to_reader(self, name, fine):
-        reader = self.check_reader(name)
-        if reader:
-            reader.fine += fine
+    def add_fine_to_reader(self, name):
+        for reader in self.readers:
+            reader.fine += 100
             print("Fine added successfully.")
 
     def save_to_file(self):
         file = open('reader.txt', 'w')
         for reader in self.readers:
-            file.write(f"|{reader.name}|{reader.email}|{reader.phone_number}|{reader.title_of_book}|{reader.borrow_date}"
+            file.write(f"|{reader.name}|{reader.email}|{reader.phone_number}|{reader.book_title}|{reader.borrow_date}"
                        f"|{reader.return_date}|{reader.status}|{reader.fine}\n")
         file.close()
         print("Data saved to file successfully.")
@@ -116,3 +119,13 @@ class ReaderManagement:
                 return True
             else:
                 return False
+
+    def check_return_dates(self):
+        count = 0
+        for reader in self.readers:
+            if reader.to_dict()['return_date'] < datetime.now().strftime('%Y-%m-%d'):
+                count += 1
+                self.add_fine_to_reader(reader.name)  # Fine amount
+                print(f"Fine issued to {reader.name} for late return of book: {reader.book_title}")
+        if count == 0:
+            print("No reader is gave fine issued.")

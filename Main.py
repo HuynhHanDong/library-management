@@ -11,6 +11,7 @@ def main():
         print("|  2. Reader Management                             |")
         print("|  3. Circulation Manager                           |")
         print("|  4. Exit                                          |")
+        print("|                                                   |")
         print("+---------------------------------------------------+")
 
         try:
@@ -131,7 +132,7 @@ def reader_menu():
                 phone_number = int(input("Enter reader's phone number: "))
                 title_of_book = input("Enter title of borrowed book: ")
                 borrow_date = input("Enter borrow date, format is year-month-day: ")
-                new_reader = Reader(name.title(), email.lower(), phone_number, title_of_book.title(), borrow_date)
+                new_reader = Reader(name.title(), email.lower(), str(phone_number), title_of_book.title(), borrow_date)
                 reader_management.add_reader(new_reader)
 
             elif action == 2:
@@ -152,11 +153,7 @@ def reader_menu():
                 reader_management.print_list_by_borrow_date_or_fine()
 
             elif action == 7:
-                user_input = input("Enter filter_key-filter_value pairs (e.g., name:Sang, email:Sang@): ")
-                pairs = user_input.split(',')
-                key_value_pairs = [pair.strip().split(':') for pair in pairs]
-                arguments = {key.strip(): value.strip() for key, value in key_value_pairs}
-                reader_management.show_list_of_readers_with_filter(**arguments)
+                reader_management.show_list_of_readers_with_filter()
 
             elif action == 8:
                 returned = reader_management.add_returned_book()
