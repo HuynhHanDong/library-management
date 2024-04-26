@@ -18,13 +18,20 @@ class BooksManager:
         print("Book added successfully!")
 
     def change_info(self):
-        change = input("Enter book's id to change info: ")
+        change = input("Enter id of the book needed to change info: ")
         if change in self.book_list:
             num = int(input("Choose the number of category you want to change: 1.title  |  2.author  |  3.genre  |  4.quantity \n"))
-            if 0 < num < 5:
+            if 0 < num < 4:
                 new = input("Enter new info: ")
                 self.book_list[change][num - 1] = new.title()
                 print("Book info changed!")
+            elif num == 4:
+                new = int(input("Enter new info: "))
+                if new <= 0:
+                    print("Quantity must be larger than 0. Please try again!")
+                else:
+                    self.book_list[change][num - 1] = new
+                    print("Book info changed!")
             else:
                 print("Invalid number. Please try again!")
         else:
