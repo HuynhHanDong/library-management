@@ -1,18 +1,18 @@
 from datetime import datetime, timedelta
 
 class Reader:
-    def __init__(self, name, email, phone_number, book_title, borrow_date, status='False', fine=0):
+    def __init__(self, name, email, phone_number, book_id, borrow_date, status='False', fine='0'):
         self.name = name
         self.email = email
         self.phone_number = phone_number
-        self.book_title = book_title
+        self.book_id = book_id
         self.borrow_date = datetime.strptime(borrow_date, '%Y-%m-%d')
         self.expired_date = self.borrow_date + timedelta(days=30)
         self.status = status
         self.fine = fine
 
     def display_info(self):
-        print(f"|{self.name.center(25)}|{self.email.center(25)}|{self.phone_number.center(13)}|{self.book_title.center(21)}"
+        print(f"|{self.name.center(25)}|{self.email.center(25)}|{self.phone_number.center(13)}|{self.book_id.center(21)}"
               f"| {self.borrow_date.strftime('%Y-%m-%d')}  | {self.expired_date.strftime('%Y-%m-%d')}  "
               f"|{self.status.center(8)}|{str(self.fine).center(6)}|")
         print("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+")
@@ -33,7 +33,7 @@ class ReaderManagement:
         change = input("Enter the category you want to change: Name  |  Email  | Phone number \n")
         new = input("Enter new info: ")
         for reader in self.readers:
-            if reader.name == name.title() and reader.book_title == book.title():
+            if reader.name == name.title() and reader.book_id == book.title():
                 if change.lower() == 'name':
                     reader.name = new.title()
                     print("Reader information updated successfully.")
@@ -55,7 +55,7 @@ class ReaderManagement:
         name = input("Enter name of the reader to remove: ")
         book = input(f"Enter title of book {name.title()} borrowed: ")
         for reader in self.readers:
-            if reader.name == name.title() and reader.book_title == book.title():
+            if reader.name == name.title() and reader.book_id == book.title():
                 self.readers.remove(reader)
                 print("Reader removed successfully.")
                 return True
@@ -98,19 +98,22 @@ class ReaderManagement:
         if not self.readers:
             print("There is no reader to show.")
         else:
-            category = input("Enter category you want to filter: name | book_title | status | fine \n")
-            if category.lower() in ['name', 'book_title', 'status', 'fine']:
+            category = input("Enter category you want to filter: name | book_id | status | fine \n")
+            if category.lower() in ['name', 'book_id', 'status', 'fine']:
                 value = input("Enter value want to filter out: ")
                 print_table()
                 for reader in self.readers:
-                    if getattr(reader, category.lower()) == value.title() or getattr(reader, category.lower()) == int(value):
+                    if getattr(reader, category.lower()) == value.title():
                         reader.display_info()
+                    elif value.isnumeric():
+                        if getattr(reader, category.lower()) == int(value):
+                            reader.display_info()
             else:
                 print("Invalid category. Please try again!")
 
     def add_returned_book(self, name, book):
         for reader in self.readers:
-            if reader.name == name.title() and reader.book_title == book.title():
+            if reader.name == name.title() and reader.book_id == book.title():
                 reader.status = 'True'
                 return True
         return False
@@ -121,7 +124,7 @@ class ReaderManagement:
             if reader.expired_date < datetime.now().strftime('%Y-%m-%d'):
                 count += 1
                 self.add_fine_to_reader(reader.name)
-                print(f"Fine issued to {reader.name} for late return of book: {reader.book_title}")
+                print(f"Fine issued to {reader.name} for late return of book: {reader.book_id}")
         if count == 0:
             print("No reader is given fine issued.")
         else:
@@ -139,11 +142,11 @@ class ReaderManagement:
         else:
             file = open('reader.txt', 'w')
             file.write("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+\n")
-            file.write("|          Name           |          Email          |    Phone    |    Book Borrowed    | Borrow date | Return date | Status | Fine |\n")
+            file.write("|          Name           |          Email          |    Phone    |    Book Borrowed    | Borrow date | Expire date | Status | Fine |\n")
             file.write("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+\n")
-            for reader in self.readers:
+            for reader in sorted(self.readers, key=lambda x: x.borrow_date):
                 file.write(f"|{reader.name.center(25)}|{reader.email.center(25)}|{reader.phone_number.center(13)}|"
-                           f"{reader.book_title.center(21)}| {reader.borrow_date.strftime('%Y-%m-%d')}  | "
+                           f"{reader.book_id.center(21)}| {reader.borrow_date.strftime('%Y-%m-%d')}  | "
                            f"{reader.expired_date.strftime('%Y-%m-%d')}  |{reader.status.center(8)}|{str(reader.fine).center(6)}|\n")
                 file.write("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+\n")
             file.close()
@@ -157,5 +160,5 @@ class ReaderManagement:
 
 def print_table():
     print("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+")
-    print("|          Name           |          Email          |    Phone    |    Book Borrowed    | Borrow date | Return date | Status | Fine |")
+    print("|          Name           |          Email          |    Phone    |    Book Borrowed    | Borrow date | Expire date | Status | Fine |")
     print("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+")
