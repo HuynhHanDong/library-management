@@ -46,14 +46,18 @@ class BooksManager:
             print("This book does not exist!")
 
     def find_book(self):
-        book = input("Enter book's id to find: ")
-        if book in self.book_list:
-            print_table()
-            print(f"|{book.center(8)}|{self.book_list[book][0].center(21)}|{self.book_list[book][1].center(20)}|{self.book_list[book][2].center(15)}|"
-                  f"{str(self.book_list[book][3]).center(15)}|{str(self.book_list[book][4]).center(15)}|{self.book_list[book][5].center(15)}|")
-            print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
+        if not self.book_list:
+            print("There is no book to display.")
         else:
-            print("Book not found.")
+            book = input("Enter book's id to find: ")
+            if book in self.book_list:
+                print_table()
+                print(f"|{book.center(8)}|{self.book_list[book][0].center(21)}|{self.book_list[book][1].center(20)}|"
+                      f"{self.book_list[book][2].center(15)}|{str(self.book_list[book][3]).center(15)}|"
+                      f"{str(self.book_list[book][4]).center(15)}|{self.book_list[book][5].center(15)}|")
+                print("+--------+---------------------+--------------------+---------------+---------------+---------------+---------------+")
+            else:
+                print("Book not found.")
 
     def display_book_list(self):
         if not self.book_list:
@@ -104,10 +108,12 @@ class BooksManager:
             self.borrowed_book.append(id)
             self.book_list[id][4] += 1
             print("Borrowed book successfully!")
+            if self.book_list[id][3] == self.book_list[id][4]:
+                self.book_list[id][5] = "Not Available"
+            return True
         else:
             print("This book is not available now!")
-        if self.book_list[id][3] == self.book_list[id][4]:
-            self.book_list[id][5] = "Not Available"
+            return False
 
     def return_book(self, id):
         try:
@@ -116,8 +122,10 @@ class BooksManager:
             print("Returned book successfully!")
             if self.book_list[id][4] < self.book_list[id][3]:
                 self.book_list[id][5] = "Available"
+            return True
         except:
             print("This book was not borrowed.")
+            return False
 
     def print_borrowed_list(self):
         if not self.borrowed_book:
@@ -145,6 +153,8 @@ class BooksManager:
             for book in self.borrowed_book:
                 data.write(f'|{book.center(8)}|{self.book_list[book][0].center(21)}|\n')
                 data.write("+--------+---------------------+\n")
+            print("Saved to file!")
+            data.close()
 
     def save_file_book_list(self):
         if not self.book_list:

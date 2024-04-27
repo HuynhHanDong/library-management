@@ -1,6 +1,5 @@
 from BookManagement import*
 from ReaderManagement import *
-from CirculationManager import CirculationManager
 
 def main():
     while True:
@@ -9,8 +8,7 @@ def main():
         print("|  Which Section Would You Like To Manage?          |")
         print("|  1. Book Management                               |")
         print("|  2. Reader Management                             |")
-        print("|  3. Circulation Manager                           |")
-        print("|  4. Exit                                          |")
+        print("|  3. Exit                                          |")
         print("|                                                   |")
         print("+---------------------------------------------------+")
 
@@ -23,9 +21,6 @@ def main():
                 print("Moving to Reader Management Section...")
                 reader_menu()
             elif choice == 3:
-                print("Moving to Circulation Manager Section...")
-                manager_menu()
-            elif choice == 4:
                 print("Exiting program...")
                 break
             else:
@@ -35,8 +30,8 @@ def main():
         print()
         print("~" * 120)
 
+manager = BooksManager()
 def book_menu():
-    manager = BooksManager()
     while True:
         print("\n+----------------- Book Management -----------------+")
         print("|  1. Add Book                                      |")
@@ -120,12 +115,13 @@ def reader_menu():
         print("|  6. Print list of reader with descending borrow date / fine   |")
         print("|  7. Show list of reader with filter                           |")
         print("|  8. Return book                                               |")
-        print("|  9. Save to file                                              |")
-        print("|  10. Exit                                                     |")
+        print("|  9. Check expired date and issue fine to readers              |")
+        print("|  10. Save to file                                             |")
+        print("|  11. Exit                                                     |")
         print("+---------------------------------------------------------------+")
 
         try:
-            action = int(input("Enter your action: "))
+            action = int(input("Enter your choice: "))
             if action == 1:
                 name = input("Enter reader's name: ")
                 email = input("Enter reader's email: ")
@@ -133,18 +129,24 @@ def reader_menu():
                 title_of_book = input("Enter title of borrowed book: ")
                 borrow_date = input("Enter borrow date, format is year-month-day: ")
                 new_reader = Reader(name.title(), email.lower(), str(phone_number), title_of_book.title(), borrow_date)
-                reader_management.add_reader(new_reader)
+                try:
+                    if manager.borrow_book(new_reader.book_title):
+                        reader_management.add_reader(new_reader)
+                except:
+                    print("This book does not exist.")
 
             elif action == 2:
-                reader_management.change_reader_info()
+                if not reader_management.change_reader_info():
+                    print("No matching reader info. Please check reader's name or book title again.")
 
             elif action == 3:
-                reader_management.remove_reader()
+                if not reader_management.remove_reader():
+                    print("No matching reader to remove. Please check reader's name or book title again.")
 
             elif action == 4:
                 found = reader_management.find_reader_by_name()
                 if not found:
-                    print("Reader does not exist.")
+                    print("Reader does not found.")
 
             elif action == 5:
                 reader_management.display_list_of_readers()
@@ -156,14 +158,21 @@ def reader_menu():
                 reader_management.show_list_of_readers_with_filter()
 
             elif action == 8:
-                returned = reader_management.add_returned_book()
-                if not returned:
-                    print("Invalid book title. Please try again!")
+                name = input("Enter name of the reader returning the book: ")
+                book = input("Enter name of the book: ")
+                if reader_management.add_returned_book(name, book):
+                    manager.return_book(book)
+                    print("Book returned successfully!")
+                else:
+                    print("No matching reader. Please check reader's name or book title again.")
 
             elif action == 9:
-                reader_management.save_to_file()
+                reader_management.check_expired_date()
 
             elif action == 10:
+                reader_management.save_to_file()
+
+            elif action == 11:
                 print("Exiting Readers Management...")
                 break
 
@@ -172,25 +181,8 @@ def reader_menu():
 
         except:
             print("Invalid input. Please try again.")
+        print()
+        print("~" * 120)
 
-def manager_menu():
-    circulation_manager = CirculationManager()
-    while True:
-        print("Circulation Manager:")
-        print("1. ...")
-        print("2. ...")
-        print("3. Send a Fine")
-        print("4. Exit")
-
-        action = input("Enter your action: ")
-        if action == "4":
-            break
-        elif action == "1":
-            pass
-        elif action == "2":
-            pass
-        elif action == "3":
-            pass
-            #circulation_manager.check_return_dates(reader_management=reader_management)
 if __name__ == "__main__":
     main()
