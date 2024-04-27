@@ -1,14 +1,14 @@
 from datetime import datetime, timedelta
 
 class Reader:
-    def __init__(self, name, email, phone_number, book_id, borrow_date, status='False', fine='0'):
+    def __init__(self, name, email, phone_number, book_id, borrow_date, status='False', fine=0):
         self.name = name
         self.email = email
         self.phone_number = phone_number
         self.book_id = book_id
         self.borrow_date = datetime.strptime(borrow_date, '%Y-%m-%d')
         self.expired_date = self.borrow_date + timedelta(days=30)
-        self.status = status
+        self.status = status  # False: haven't returned book, True: returned book
         self.fine = fine
 
     def display_info(self):
@@ -56,8 +56,11 @@ class ReaderManagement:
         book = input(f"Enter title of book {name.title()} borrowed: ")
         for reader in self.readers:
             if reader.name == name.title() and reader.book_id == book.title():
-                self.readers.remove(reader)
-                print("Reader removed successfully.")
+                if reader.status == "True":
+                    self.readers.remove(reader)
+                    print("Reader removed successfully.")
+                else:
+                    print("This reader haven't returned a book! His/her info cannot be remove.")
                 return True
         return False
             
@@ -121,20 +124,17 @@ class ReaderManagement:
     def check_expired_date(self):
         count = 0
         for reader in self.readers:
-            if reader.expired_date < datetime.now().strftime('%Y-%m-%d'):
+            if reader.expired_date.strftime('%Y-%m-%d') < datetime.today().strftime('%Y-%m-%d') and reader.status == "False":
                 count += 1
-                self.add_fine_to_reader(reader.name)
+                self.add_fine_to_reader(reader)
                 print(f"Fine issued to {reader.name} for late return of book: {reader.book_id}")
         if count == 0:
             print("No reader is given fine issued.")
         else:
             print(f"Issued fine to {count} reader(s).")
 
-    def add_fine_to_reader(self, name):
-        for reader in self.readers:
-            if reader.name == name:
-                reader.fine += 100
-        print("Fine added successfully.")
+    def add_fine_to_reader(self, reader):
+        reader.fine += 100
 
     def save_to_file(self):
         if not self.readers:
@@ -142,7 +142,7 @@ class ReaderManagement:
         else:
             file = open('reader.txt', 'w')
             file.write("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+\n")
-            file.write("|          Name           |          Email          |    Phone    |    Book Borrowed    | Borrow date | Expire date | Status | Fine |\n")
+            file.write("|           Name          |          Email          |    Phone    |    Book Borrowed    | Borrow date | Expire date | Status | Fine |\n")
             file.write("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+\n")
             for reader in sorted(self.readers, key=lambda x: x.borrow_date):
                 file.write(f"|{reader.name.center(25)}|{reader.email.center(25)}|{reader.phone_number.center(13)}|"
@@ -152,13 +152,7 @@ class ReaderManagement:
             file.close()
             print("Data saved to file successfully.")
 
-    def check_reader(self, name):
-        for reader in self.readers:
-            if reader.name == name.title():
-                return True
-        return False
-
 def print_table():
     print("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+")
-    print("|          Name           |          Email          |    Phone    |    Book Borrowed    | Borrow date | Expire date | Status | Fine |")
+    print("|           Name          |          Email          |    Phone    |    Book Borrowed    | Borrow date | Expire date | Status | Fine |")
     print("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+")

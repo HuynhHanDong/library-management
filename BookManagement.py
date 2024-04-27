@@ -18,7 +18,7 @@ class BooksManager:
         print("Book added successfully!")
 
     def change_info(self):
-        change = input("Enter id of the book needed to change info: ")
+        change = input("Enter book id to change info: ")
         if change in self.book_list:
             num = int(input("Choose the number of category you want to change: 1.title  |  2.author  |  3.genre  |  4.quantity \n"))
             if 0 < num < 4:
@@ -107,7 +107,6 @@ class BooksManager:
         if self.book_list[id][5] == "Available":
             self.borrowed_book.append(id)
             self.book_list[id][4] += 1
-            print("Borrowed book successfully!")
             if self.book_list[id][3] == self.book_list[id][4]:
                 self.book_list[id][5] = "Not Available"
             return True
@@ -131,10 +130,8 @@ class BooksManager:
         if not self.borrowed_book:
             print("There is no borrowed book to display.")
         else:
-            print("+------------------------------+")
-            print("|        Borrowed Books        |")
             print("+--------+---------------------+")
-            print("|  ID    |        Title        |")
+            print("|  ID    |    Borrowed Books   |")
             print("+--------+---------------------+")
             for book in self.borrowed_book:
                 print(f'|{book.center(8)}|{self.book_list[book][0].center(21)}|')
@@ -145,10 +142,8 @@ class BooksManager:
             print("There is no data to save.")
         else:
             data = open("Borrowed_books.txt", "w")
-            data.write("+------------------------------+\n")
-            data.write("|        Borrowed Books        |\n")
             data.write("+--------+---------------------+\n")
-            data.write("|  ID    |        Title        |\n")
+            data.write("|  ID    |    Borrowed Books   |\n")
             data.write("+--------+---------------------+\n")
             for book in self.borrowed_book:
                 data.write(f'|{book.center(8)}|{self.book_list[book][0].center(21)}|\n')
