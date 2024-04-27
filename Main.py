@@ -126,11 +126,11 @@ def reader_menu():
                 name = input("Enter reader's name: ")
                 email = input("Enter reader's email: ")
                 phone_number = int(input("Enter reader's phone number: "))
-                title_of_book = input("Enter title of borrowed book: ")
+                book_id = input("Enter id of borrowed book: ")
                 borrow_date = input("Enter borrow date, format is year-month-day: ")
-                new_reader = Reader(name.title(), email.lower(), str(phone_number), title_of_book.title(), borrow_date)
+                new_reader = Reader(name.title(), email.lower(), str(phone_number), book_id.title(), borrow_date)
                 try:
-                    if manager.borrow_book(new_reader.book_title):
+                    if manager.borrow_book(new_reader.book_id):
                         reader_management.add_reader(new_reader)
                 except:
                     print("This book does not exist.")
