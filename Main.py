@@ -16,9 +16,13 @@ def main():
             choice = int(input("Enter the number of your choice: "))
             if choice == 1:
                 print("Moving to Book Management Section...")
+                print()
+                print("~" * 120)
                 book_menu()
             elif choice == 2:
                 print("Moving to Reader Management Section...")
+                print()
+                print("~" * 120)
                 reader_menu()
             elif choice == 3:
                 print("Exiting program...")
@@ -27,8 +31,6 @@ def main():
                 print("Invalid choice. Please try again!")
         except:
             print("Invalid input. Please try again!")
-        print()
-        print("~" * 120)
 
 manager = BooksManager()
 def book_menu():
@@ -43,8 +45,7 @@ def book_menu():
         print("|  7. Display Book List With filter                 |")
         print("|  8. Print Borrowed Book List                      |")
         print("|  9. Save File Borrowed Book                       |")
-        print("|  10. Save File Book List                          |")
-        print("|  11. Exit                                         |")
+        print("|  10. Exit                                         |")
         print("+---------------------------------------------------+")
 
         try:
@@ -61,7 +62,7 @@ def book_menu():
                 if quantity <= 0:
                     print("Number of copies must be larger than 0. Please try again!")
                     continue
-                book = Book(id, title.title(), author.title(), genre.title(), quantity)
+                book = Book(id.upper(), title.title(), author.title(), genre.title(), quantity)
                 manager.add_book(book)
 
             elif choice == 2:
@@ -89,9 +90,6 @@ def book_menu():
                 manager.save_file_borrowed_book()
 
             elif choice == 10:
-                manager.save_file_book_list()
-
-            elif choice == 11:
                 print("Exiting Book Management Section...")
                 break
 
@@ -101,6 +99,7 @@ def book_menu():
         except:
             print("Invalid input. Please try again.")
         print()
+        manager.save_file_book_list()
         print("~" * 120)
 
 def reader_menu():
@@ -116,8 +115,7 @@ def reader_menu():
         print("|  7. Show list of reader with filter                           |")
         print("|  8. Return book                                               |")
         print("|  9. Check expired date and issue fine to readers              |")
-        print("|  10. Save to file                                             |")
-        print("|  11. Exit                                                     |")
+        print("|  10. Exit                                                     |")
         print("+---------------------------------------------------------------+")
 
         try:
@@ -128,7 +126,7 @@ def reader_menu():
                 phone_number = int(input("Enter reader's phone number: "))
                 book_id = input("Enter id of borrowed book: ")
                 borrow_date = input("Enter borrow date, format is year-month-day: ")
-                new_reader = Reader(name.title(), email.lower(), str(phone_number), book_id.title(), borrow_date)
+                new_reader = Reader(name.title(), email.lower(), str(phone_number), book_id.upper(), borrow_date)
                 try:
                     if manager.borrow_book(new_reader.book_id):
                         reader_management.add_reader(new_reader)
@@ -160,8 +158,8 @@ def reader_menu():
             elif action == 8:
                 name = input("Enter name of the reader returning the book: ")
                 book = input("Enter name of the book: ")
-                if reader_management.add_returned_book(name, book):
-                    manager.return_book(book)
+                if reader_management.add_returned_book(name, book.upper()):
+                    manager.return_book(book.upper())
                     print("Book returned successfully!")
                 else:
                     print("No matching reader. Please check reader's name or book title again.")

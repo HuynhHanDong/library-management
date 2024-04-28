@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from Array import MyArray
 
 class Reader:
     def __init__(self, name, email, phone_number, book_id, borrow_date, status='False', fine=0):
@@ -17,7 +18,7 @@ class Reader:
               f"|{self.status.center(8)}|{str(self.fine).center(6)}|")
         print("+-------------------------+-------------------------+-------------+---------------------+-------------+-------------+--------+------+")
 
-reader_list = list()
+reader_list = MyArray()
 
 class ReaderManagement:
     def __init__(self):
@@ -33,7 +34,7 @@ class ReaderManagement:
         change = input("Enter the category you want to change: Name  |  Email  | Phone number \n")
         new = input("Enter new info: ")
         for reader in self.readers:
-            if reader.name == name.title() and reader.book_id == book.title():
+            if reader.name == name.title() and reader.book_id == book.upper():
                 if change.lower() == 'name':
                     reader.name = new.title()
                     print("Reader information updated successfully.")
@@ -55,7 +56,7 @@ class ReaderManagement:
         name = input("Enter name of the reader to remove: ")
         book = input(f"Enter title of book {name.title()} borrowed: ")
         for reader in self.readers:
-            if reader.name == name.title() and reader.book_id == book.title():
+            if reader.name == name.title() and reader.book_id == book.upper():
                 if reader.status == "True":
                     self.readers.remove(reader)
                     print("Reader removed successfully.")
@@ -106,7 +107,7 @@ class ReaderManagement:
                 value = input("Enter value want to filter out: ")
                 print_table()
                 for reader in self.readers:
-                    if getattr(reader, category.lower()) == value.title():
+                    if getattr(reader, category.lower()) == value.title() or getattr(reader, category.lower()) == value.upper():
                         reader.display_info()
                     elif value.isnumeric():
                         if getattr(reader, category.lower()) == int(value):
@@ -116,7 +117,7 @@ class ReaderManagement:
 
     def add_returned_book(self, name, book):
         for reader in self.readers:
-            if reader.name == name.title() and reader.book_id == book.title():
+            if reader.name == name.title() and reader.book_id == book.upper():
                 reader.status = 'True'
                 return True
         return False
