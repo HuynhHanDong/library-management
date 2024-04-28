@@ -168,9 +168,6 @@ def reader_menu():
                 reader_management.check_expired_date()
 
             elif action == 10:
-                reader_management.save_to_file()
-
-            elif action == 11:
                 print("Exiting Readers Management...")
                 break
 
@@ -180,6 +177,7 @@ def reader_menu():
         except:
             print("Invalid input. Please try again.")
         print()
+        reader_management.save_to_file()
         print("~" * 120)
 
 if __name__ == "__main__":
