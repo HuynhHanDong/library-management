@@ -66,17 +66,14 @@ class ReaderManagement:
         return False
             
     def find_reader_by_name(self):
-        if not self.readers:
-            print("There is no reader to find.")
-        else:
-            found = False
-            name = input("Enter the name of the reader to find: ")
-            print_table()
-            for reader in self.readers:
-                if reader.name == name.title():
-                    reader.display_info()
-                    found = True
-            return found
+        found = False
+        name = input("Enter the name of the reader to find: ")
+        print_table()
+        for reader in self.readers:
+            if reader.name == name.title():
+                reader.display_info()
+                found = True
+        return found
 
     def display_list_of_readers(self):
         if not self.readers:

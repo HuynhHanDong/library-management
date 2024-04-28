@@ -11,12 +11,6 @@ class MyDictionary:
         self.keys.append(key)
         self.values.append(value)
 
-    def get(self, key):
-        if key not in self.keys:
-            raise KeyError("Key not found")
-        index = self.keys.index(key)
-        return self.values[index]
-
     def delete(self, key):
         if key not in self.keys:
             raise KeyError("Key not found")
