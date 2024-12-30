@@ -1,8 +1,14 @@
+import ctypes
+
 class MyArray:
     def __init__(self, capacity=10):
         self.capacity = capacity
         self.element = 0
-        self.data = [None] * capacity
+        self.data = self.create_array(self.capacity)
+
+    @staticmethod
+    def create_array(capacity):
+        return (capacity * ctypes.py_object)()
 
     def __getitem__(self, index):
         if index < 0 or index >= self.element:
@@ -13,6 +19,9 @@ class MyArray:
         if index < 0 or index >= self.element:
             raise IndexError("Index out of range")
         self.data[index] = value
+
+    def __len__(self):
+        return self._size
 
     def __str__(self):
         return str(self.data[:self.element])
