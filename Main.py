@@ -5,9 +5,9 @@ def main():
     while True:
         print("\n+------------ Library Management System ------------+")
         print("|                                                   |")
-        print("|  Which Section Would You Like To Manage?          |")
-        print("|  1. Book Management                               |")
-        print("|  2. Reader Management                             |")
+        print("|  Which section would you like to manage?          |")
+        print("|  1. Book management                               |")
+        print("|  2. Reader management                             |")
         print("|  3. Exit                                          |")
         print("|                                                   |")
         print("+---------------------------------------------------+")
