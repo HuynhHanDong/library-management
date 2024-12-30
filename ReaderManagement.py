@@ -26,6 +26,7 @@ class ReaderManagement:
 
     def add_reader(self, new_reader):
         self.readers.append(new_reader)
+        self.save_to_file()
         print(f"Added new reader successfully!")
 
     def change_reader_info(self):
@@ -37,13 +38,17 @@ class ReaderManagement:
             if reader.name == name.title() and reader.book_id == book.upper():
                 if change.lower() == 'name':
                     reader.name = new.title()
+                    self.save_to_file()
                     print("Reader information updated successfully.")
+                    break
                 elif change.lower() == 'email':
                     reader.email = new.lower()
+                    self.save_to_file()
                     print("Reader information updated successfully.")
                 elif change.lower() == 'phone number':
                     if new.isnumeric():
                         reader.phone_number = new
+                        self.save_to_file()
                         print("Reader information updated successfully.")
                     else:
                         print("Invalid phone number.")
@@ -59,6 +64,7 @@ class ReaderManagement:
             if reader.name == name.title() and reader.book_id == book.upper():
                 if reader.status == "True":
                     self.readers.remove(reader)
+                    self.save_to_file()
                     print("Reader removed successfully.")
                 else:
                     print("This reader haven't returned a book! His/her info cannot be remove.")
@@ -75,7 +81,7 @@ class ReaderManagement:
                 found = True
         return found
 
-    def display_list_of_readers(self):
+    def show_list_of_readers(self):
         if not self.readers:
             print("There is no reader to display.")
         else:
@@ -95,7 +101,7 @@ class ReaderManagement:
             else:
                 print('Sort key must be "borrow_date" or "fine".')
 
-    def show_list_of_readers_with_filter(self):
+    def display_list_of_readers_with_filter(self):
         if not self.readers:
             print("There is no reader to show.")
         else:
@@ -116,6 +122,7 @@ class ReaderManagement:
         for reader in self.readers:
             if reader.name == name.title() and reader.book_id == book.upper():
                 reader.status = 'True'
+                self.save_to_file()
                 return True
         return False
 
@@ -126,6 +133,7 @@ class ReaderManagement:
                 count += 1
                 self.add_fine_to_reader(reader)
                 print(f"Fine issued to {reader.name} for late return of book: {reader.book_id}")
+                self.save_to_file()
         if count == 0:
             print("No reader is given fine issued.")
         else:

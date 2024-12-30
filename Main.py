@@ -36,16 +36,15 @@ manager = BooksManager()
 def book_menu():
     while True:
         print("\n+----------------- Book Management -----------------+")
-        print("|  1. Add Book                                      |")
-        print("|  2. Change Book Info                              |")
-        print("|  3. Remove Book                                   |")
-        print("|  4. Find Book                                     |")
-        print("|  5. Display All Books                             |")
-        print("|  6. Sort Book list By Alphabetical Title          |")
-        print("|  7. Display Book List With filter                 |")
-        print("|  8. Print Borrowed Book List                      |")
-        print("|  9. Save File Borrowed Book                       |")
-        print("|  10. Exit                                         |")
+        print("|  1. Add book                                      |")
+        print("|  2. Change book info                              |")
+        print("|  3. Remove book                                   |")
+        print("|  4. Find book                                     |")
+        print("|  5. Show all books                                |")
+        print("|  6. Display book list with filter                 |")
+        print("|  7. Sort book list by alphabetical                |")
+        print("|  8. Print borrowed book list                      |")
+        print("|  9. Exit                                          |")
         print("+---------------------------------------------------+")
 
         try:
@@ -75,21 +74,18 @@ def book_menu():
                 manager.find_book()
 
             elif choice == 5:
-                manager.display_book_list()
+                manager.show_book_list()
 
             elif choice == 6:
-                manager.sort_book_list()
+                manager.filter()
 
             elif choice == 7:
-                manager.filter()
+                manager.sort_book_list()
 
             elif choice == 8:
                 manager.print_borrowed_list()
 
             elif choice == 9:
-                manager.save_file_borrowed_book()
-
-            elif choice == 10:
                 print("Exiting Book Management Section...")
                 break
 
@@ -106,15 +102,15 @@ def reader_menu():
     reader_management = ReaderManagement()
     while True:
         print("\n+--------------------- Readers management ----------------------+")
-        print("|  1. Add Reader                                                |")
-        print("|  2. Change Reader Info                                        |")
-        print("|  3. Remove Reader                                             |")
-        print("|  4. Find Reader By Name                                       |")
-        print("|  5. Display List Of Reader                                    |")
-        print("|  6. Print List Of Reader With Descending Borrow Date / Fine   |")
-        print("|  7. Show list of reader with filter                           |")
+        print("|  1. Add reader and borrow book                                |")
+        print("|  2. Change reader info                                        |")
+        print("|  3. Remove reader                                             |")
+        print("|  4. Find reader by name                                       |")
+        print("|  5. Show list of reader                                       |")
+        print("|  6. Display list of reader with filter                        |")
+        print("|  7. Print list of reader with descending borrow date or fine  |")
         print("|  8. Return book                                               |")
-        print("|  9. Check expired date and issue fine to readers              |")
+        print("|  9. Check expired date and issue fine to readers              |")     
         print("|  10. Exit                                                     |")
         print("+---------------------------------------------------------------+")
 
@@ -147,13 +143,13 @@ def reader_menu():
                     print("Reader does not found.")
 
             elif action == 5:
-                reader_management.display_list_of_readers()
+                reader_management.show_list_of_readers()
 
             elif action == 6:
-                reader_management.print_list_by_borrow_date_or_fine()
+                reader_management.display_list_of_readers_with_filter()
 
             elif action == 7:
-                reader_management.show_list_of_readers_with_filter()
+                reader_management.print_list_by_borrow_date_or_fine()
 
             elif action == 8:
                 name = input("Enter name of the reader returning the book: ")

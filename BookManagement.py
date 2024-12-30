@@ -18,6 +18,7 @@ class BooksManager:
 
     def add_book(self, book):
         self.book_list.insert(book.id, [book.title, book.author, book.genre, book.quantity, book.borrowed, book.status])
+        self.save_file_book_list()
         print("Book added successfully!")
 
     def change_info(self):
@@ -28,6 +29,7 @@ class BooksManager:
             if 0 < num < 4:
                 new = input("Enter new info: ")
                 self.book_list[change][num - 1] = new.title()
+                self.save_file_book_list()
                 print("Book info changed!")
             elif num == 4:
                 new = int(input("Enter new info: "))
@@ -35,6 +37,7 @@ class BooksManager:
                     print("Quantity must be larger than 0. Please try again!")
                 else:
                     self.book_list[change][num - 1] = new
+                    self.save_file_book_list()
                     print("Book info changed!")
             else:
                 print("Invalid number. Please try again!")
@@ -48,6 +51,7 @@ class BooksManager:
             if self.book_list[remove][4] == 0:
                 try:
                     self.book_list.delete(remove)
+                    self.save_file_book_list()
                     print("Book removed!")
                 except KeyError:
                     print("This book does not exist!")
@@ -68,7 +72,7 @@ class BooksManager:
         else:
             print("Book not found.")
 
-    def display_book_list(self):
+    def show_book_list(self):
         print_table()
         for book in sorted(self.book_list.keys):
             print(f"|{book.center(8)}|{self.book_list[book][0].center(21)}|{self.book_list[book][1].center(20)}|"
@@ -106,9 +110,11 @@ class BooksManager:
     def borrow_book(self, id):
         if self.book_list[id][5] == "Available":
             self.borrowed_book.append(id)
+            self.save_file_borrowed_book()
             self.book_list[id][4] += 1
             if self.book_list[id][3] == self.book_list[id][4]:
                 self.book_list[id][5] = "Not Available"
+                self.save_file_book_list()
             return True
         else:
             print("This book is not available now!")
@@ -117,10 +123,12 @@ class BooksManager:
     def return_book(self, id):
         try:
             self.borrowed_book.remove(id)
+            self.save_file_borrowed_book()
             self.book_list[id][4] -= 1
             print("Returned book successfully!")
             if self.book_list[id][4] < self.book_list[id][3]:
                 self.book_list[id][5] = "Available"
+                self.save_file_book_list()
             return True
         except:
             print("This book was not borrowed.")
